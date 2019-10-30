@@ -23,21 +23,21 @@ hbs.registerPartials(partialPath)
 app.use(express.static(publicDirectoryPath))
 
 app.get('/', (req, res) => {
-    res.render('index.hbs', {
+    res.render('index', {
         title: 'Weather',
         name: 'Farhan Tahir'
     })
 })
 
 app.get('/about', (req, res) => {
-    res.render('about.hbs', {
+    res.render('about', {
         title: 'About',
         name: 'Farhan Tahir'
     })
 })
 
 app.get('/help', (req, res) => {
-    res.render('help.hbs', {
+    res.render('help', {
         msg: 'No help available!',
         title: 'Help',
         name: 'Farhan Tahir'
@@ -50,15 +50,16 @@ app.get('/weather', (req, res) => {
             error: "Provide an address!"
         })
     }
+
     const address = req.query.address
 
     geocode(address, (error, response) => {
         if (error) {
-            return res.send(error)
+            return res.send({ error })
         }
         forecast(response.latitude, response.longitude, (error, forecastData) => {
             if (error) {
-                return res.send(error)
+                return res.send({ error })
             }
             res.send({
                 forecast: forecastData,
